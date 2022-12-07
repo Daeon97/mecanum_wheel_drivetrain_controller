@@ -1,6 +1,6 @@
 # mecanum_wheel_drivetrain_controller
 
-Mobile app interface to control a mecanum wheel drivetrain. The app
+Mobile app interface for controlling a mecanum wheel drivetrain. The app
 communicates with a local MQTT server that we have set up here in
 Innov8 Hub. Using the publish/subscribe model, messages are published
 to specific topics which the drivetrain subscribes to and adjusts its
