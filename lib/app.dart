@@ -46,10 +46,18 @@ class App extends StatelessWidget {
             ctx.read<ActionsRepo>(),
           ),
         ),
+        BlocProvider<BluetoothAvailabilityCubit>(
+          create: (ctx) => BluetoothAvailabilityCubit(
+            ctx.read<BluetoothRepo>(),
+          ),
+        ),
         BlocProvider<BluetoothPermissionCubit>(
           create: (ctx) => BluetoothPermissionCubit(
             ctx.read<PermissionsRepo>(),
           ),
+        ),
+        BlocProvider<ScreenToShowCubit>(
+          create: (ctx) => ScreenToShowCubit(),
         ),
       ];
 
@@ -57,11 +65,13 @@ class App extends StatelessWidget {
         builder: (_) {
           switch (routeSettings.name) {
             case defaultScreenRoute:
-              return const BluetoothStateScreen();
-            case bluetoothStateScreenRoute:
-              return const BluetoothStateScreen();
-            case homeScreenRoute:
-              return const HomeScreen();
+              return const SelectConnectionScreen();
+            case bluetoothOpsScreenRoute:
+              return const BluetoothOpsScreen();
+            case controllerScreenRoute:
+              return const ControllerScreen();
+            case selectConnectionScreenRoute:
+              return const SelectConnectionScreen();
             default:
               return const SizedBox.shrink();
           }

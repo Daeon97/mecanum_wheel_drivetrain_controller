@@ -4,3 +4,14 @@ enum BluetoothPermissionType {
   bluetoothConnect,
   bluetoothScan,
 }
+
+enum ConnectionMode {
+  wifi,
+  bluetooth,
+}
+
+enum ScreenToShow {
+  selectConnection,
+  bluetoothOps,
+  wifiOps,
+}

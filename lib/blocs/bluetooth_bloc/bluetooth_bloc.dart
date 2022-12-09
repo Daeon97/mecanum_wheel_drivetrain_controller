@@ -2,14 +2,13 @@
 
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_blue/flutter_blue.dart' as f_b;
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:mecanum_wheel_drivetrain_controller/repos/repos.dart';
 import 'package:mecanum_wheel_drivetrain_controller/utils/utils.dart';
 
 part 'bluetooth_event.dart';
-
 part 'bluetooth_state.dart';
 
 class BluetoothBloc extends Bloc<BluetoothEvent, BluetoothState> {
@@ -18,22 +17,6 @@ class BluetoothBloc extends Bloc<BluetoothEvent, BluetoothState> {
   ) : super(
           const BluetoothInitialState(),
         ) {
-    on<CheckBluetoothAvailableEvent>(
-      (event, emit) async {
-        final bluetoothAvailable = await bluetoothRepo.isBluetoothAvailable;
-        if (bluetoothAvailable) {
-          emit(
-            const BluetoothAvailableState(),
-          );
-        } else {
-          emit(
-            const BluetoothNotAvailableState(
-              bluetoothNotAvailableMessageText,
-            ),
-          );
-        }
-      },
-    );
     on<TurnBluetoothOnEvent>(
       (event, emit) async {
         final turnBluetoothOn = await bluetoothRepo.turnBluetoothOn();
@@ -51,7 +34,9 @@ class BluetoothBloc extends Bloc<BluetoothEvent, BluetoothState> {
         _bluetoothStateStreamSubscription = bluetoothRepo.bluetoothState.listen(
           (bluetoothState) {
             if (bluetoothState == f_b.BluetoothState.on) {
-              //.
+              // add(
+              // ,
+              // );
             } else if (bluetoothState == f_b.BluetoothState.off) {
               add(
                 const BluetoothOffEvent(

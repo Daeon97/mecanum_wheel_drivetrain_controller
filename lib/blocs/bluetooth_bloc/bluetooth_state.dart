@@ -28,23 +28,3 @@ class BluetoothOffState extends BluetoothState {
         message,
       ];
 }
-
-class BluetoothAvailableState extends BluetoothState {
-  const BluetoothAvailableState();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class BluetoothNotAvailableState extends BluetoothState {
-  const BluetoothNotAvailableState(
-    this.message,
-  );
-
-  final String message;
-
-  @override
-  List<Object?> get props => [
-        message,
-      ];
-}

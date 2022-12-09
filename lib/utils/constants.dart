@@ -3,8 +3,9 @@
 import 'package:flutter/material.dart';
 
 const defaultScreenRoute = '/';
-const homeScreenRoute = '/homeScreen';
-const bluetoothStateScreenRoute = '/bluetoothStateScreen';
+const bluetoothOpsScreenRoute = '/bluetoothOpsScreen';
+const controllerScreenRoute = '/controllerScreen';
+const selectConnectionScreenRoute = '/selectConnection';
 
 const baseColor = Color(0xFF3309FD);
 
@@ -20,7 +21,7 @@ const nil = 0.0;
 const nilDotThree = 0.3;
 const nilDotSeven = 0.7;
 
-const threeHundred = 300.0;
+const threeHundredDotNil = 300.0;
 
 const bluetoothAnimationRiveAsset = 'assets/bluetooth.riv';
 const bluetoothAnimationName = 'scan';
@@ -44,3 +45,7 @@ const slashText = '/';
 const turnOnBluetoothText = 'Turn On Bluetooth';
 const requestPermissionAgainText = 'Request Permission Again';
 const openAppSettings = 'Open App Settings';
+const leaveHereText = 'Leave Here';
+const wifiText = 'WIFI';
+const bluetoothText = 'Bluetooth';
+const tapSelectedAgainToProceedText = 'Tap selected again to proceed';
