@@ -9,8 +9,8 @@ abstract class BluetoothEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class CheckBluetoothAvailableAndOnEvent extends BluetoothEvent {
-  const CheckBluetoothAvailableAndOnEvent();
+class CheckBluetoothAvailableEvent extends BluetoothEvent {
+  const CheckBluetoothAvailableEvent();
 
   @override
   List<Object?> get props => [];

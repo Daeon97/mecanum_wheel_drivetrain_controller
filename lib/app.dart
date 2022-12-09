@@ -17,26 +17,16 @@ class App extends StatelessWidget {
         child: MultiBlocProvider(
           providers: _blocProviders,
           child: MaterialApp(
-            theme: ThemeData(
-              primaryColor: baseColor,
-              primaryColorLight: baseColor.withOpacity(
-                nilDotThree,
-              ),
-              primaryColorDark: baseColor.withOpacity(
-                nilDotSeven,
-              ),
-              errorColor: Colors.red,
-              colorScheme: ThemeData().colorScheme.copyWith(
-                    brightness: Brightness.light,
-                    primary: baseColor,
-                  ),
-            ),
+            theme: ThemeRepo.appTheme,
             onGenerateRoute: _routes,
           ),
         ),
       );
 
   List<RepositoryProvider> get _repositoryProviders => [
+        RepositoryProvider<ActionsRepo>(
+          create: (_) => const ActionsRepo(),
+        ),
         RepositoryProvider<BluetoothRepo>(
           create: (_) => BluetoothRepo(),
         ),
@@ -51,8 +41,13 @@ class App extends StatelessWidget {
             ctx.read<BluetoothRepo>(),
           ),
         ),
-        BlocProvider<PermissionsCubit>(
-          create: (ctx) => PermissionsCubit(
+        BlocProvider<ActionsCubit>(
+          create: (ctx) => ActionsCubit(
+            ctx.read<ActionsRepo>(),
+          ),
+        ),
+        BlocProvider<BluetoothPermissionCubit>(
+          create: (ctx) => BluetoothPermissionCubit(
             ctx.read<PermissionsRepo>(),
           ),
         ),
@@ -62,24 +57,9 @@ class App extends StatelessWidget {
         builder: (_) {
           switch (routeSettings.name) {
             case defaultScreenRoute:
-              return BlocBuilder<PermissionsCubit, PermissionsState>(
-                builder: (_, permissionsState) => permissionsState
-                            is PermissionsInitialState ||
-                        (permissionsState is PermissionDeniedState &&
-                            (permissionsState.permissionType ==
-                                    PermissionType.bluetoothConnect ||
-                                permissionsState.permissionType ==
-                                    PermissionType.bluetoothScan)) ||
-                        (permissionsState is PermissionCannotBeRequestedState &&
-                            (permissionsState.permissionType ==
-                                    PermissionType.bluetoothConnect ||
-                                permissionsState.permissionType ==
-                                    PermissionType.bluetoothScan))
-                    ? const BluetoothPermissionStateScreen()
-                    : const HomeScreen(),
-              );
-            case bluetoothPermissionStateScreenRoute:
-              return const BluetoothPermissionStateScreen();
+              return const BluetoothStateScreen();
+            case bluetoothStateScreenRoute:
+              return const BluetoothStateScreen();
             case homeScreenRoute:
               return const HomeScreen();
             default:

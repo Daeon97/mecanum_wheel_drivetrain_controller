@@ -18,18 +18,13 @@ class BluetoothBloc extends Bloc<BluetoothEvent, BluetoothState> {
   ) : super(
           const BluetoothInitialState(),
         ) {
-    on<CheckBluetoothAvailableAndOnEvent>(
+    on<CheckBluetoothAvailableEvent>(
       (event, emit) async {
         final bluetoothAvailable = await bluetoothRepo.isBluetoothAvailable;
         if (bluetoothAvailable) {
-          final bluetoothOn = await bluetoothRepo.isBluetoothOn;
-          if (!bluetoothOn) {
-            add(
-              const BluetoothOffEvent(
-                bluetoothOffMessageText,
-              ),
-            );
-          }
+          emit(
+            const BluetoothAvailableState(),
+          );
         } else {
           emit(
             const BluetoothNotAvailableState(
