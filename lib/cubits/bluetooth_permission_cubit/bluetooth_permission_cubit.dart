@@ -78,6 +78,8 @@ class BluetoothPermissionCubit extends Cubit<BluetoothPermissionState> {
           );
         }
         break;
+      case BluetoothPermissionType.bluetoothScanAndConnect:
+        break;
     }
   }
 }

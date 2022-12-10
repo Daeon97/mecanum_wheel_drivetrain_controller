@@ -1,7 +1,10 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mecanum_wheel_drivetrain_controller/cubits/cubits.dart';
 import 'package:mecanum_wheel_drivetrain_controller/utils/utils.dart';
+import 'package:rive/rive.dart';
 
 class SelectConnectionScreen extends StatefulWidget {
   const SelectConnectionScreen({super.key});
@@ -12,7 +15,6 @@ class SelectConnectionScreen extends StatefulWidget {
 
 class _SelectConnectionScreenState extends State<SelectConnectionScreen> {
   late ValueNotifier<ConnectionMode?> _connectionMode;
-  bool _shouldShowInfo = true;
 
   @override
   void initState() {
@@ -37,183 +39,229 @@ class _SelectConnectionScreenState extends State<SelectConnectionScreen> {
             ),
             child: ValueListenableBuilder<ConnectionMode?>(
               valueListenable: _connectionMode,
-              builder: (_, connectionModeValue, __) => Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    borderRadius: BorderRadius.circular(
-                      veryLargePadding,
+              builder: (_, connectionModeValue, __) => AnimatedSize(
+                duration: Duration(
+                  milliseconds: threeHundredDotNil.toInt(),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      selectConnectionModeText,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: padding + tinyPadding + tinyPadding,
+                      ),
                     ),
-                    onTap: () {
-                      if (connectionModeValue != ConnectionMode.wifi) {
-                        _connectionMode.value = ConnectionMode.wifi;
-                        if (_shouldShowInfo) {
-                          showTopSnackbar(
-                            context,
-                            tapSelectedAgainToProceedText,
+                    const SizedBox(
+                      height: veryLargePadding,
+                    ),
+                    InkWell(
+                      borderRadius: BorderRadius.circular(
+                        veryLargePadding,
+                      ),
+                      onTap: () {
+                        if (connectionModeValue != ConnectionMode.wifi) {
+                          _connectionMode.value = ConnectionMode.wifi;
+                        } else {
+                          BlocProvider.of<ScreenToShowCubit>(context)
+                              .setScreenToShow(
+                            ScreenToShow.wifiOps,
                           );
-                          _shouldShowInfo = false;
                         }
-                      } else {
-                        print('wifi tapped again');
-                      }
-                    },
-                    child: AnimatedContainer(
-                      duration: Duration(
-                        milliseconds: threeHundredDotNil.toInt(),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: padding,
-                        vertical: smallPadding,
-                      ),
-                      decoration: BoxDecoration(
-                        color: connectionModeValue == ConnectionMode.wifi
-                            ? baseColor
-                            : null,
-                        border: connectionModeValue == ConnectionMode.wifi
-                            ? null
-                            : Border.all(
-                                color: Colors.grey,
-                              ),
-                        borderRadius: BorderRadius.circular(
-                          veryLargePadding,
-                        ),
-                      ),
-                      child: AnimatedSize(
+                      },
+                      child: AnimatedContainer(
                         duration: Duration(
                           milliseconds: threeHundredDotNil.toInt(),
                         ),
-                        child: AnimatedSwitcher(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: padding,
+                          vertical: connectionModeValue == ConnectionMode.wifi
+                              ? nil
+                              : smallPadding,
+                        ),
+                        decoration: BoxDecoration(
+                          color: connectionModeValue == ConnectionMode.wifi
+                              ? baseColor
+                              : null,
+                          border: connectionModeValue == ConnectionMode.wifi
+                              ? null
+                              : Border.all(
+                                  color: Colors.grey,
+                                ),
+                          borderRadius: BorderRadius.circular(
+                            veryLargePadding,
+                          ),
+                        ),
+                        child: AnimatedSize(
                           duration: Duration(
                             milliseconds: threeHundredDotNil.toInt(),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.wifi,
-                                color:
-                                    connectionModeValue == ConnectionMode.wifi
-                                        ? Colors.white
-                                        : Colors.grey,
-                                size: connectionModeValue == ConnectionMode.wifi
-                                    ? veryLargePadding
-                                    : veryLargePadding - smallPadding,
-                              ),
-                              if (connectionModeValue == ConnectionMode.wifi)
-                                const SizedBox(
-                                  width: padding,
-                                )
-                              else
-                                const SizedBox.shrink(),
-                              if (connectionModeValue == ConnectionMode.wifi)
-                                const Text(
-                                  wifiText,
-                                  style: TextStyle(
-                                    fontSize: largePadding,
-                                    color: Colors.white,
-                                  ),
-                                )
-                              else
-                                const SizedBox.shrink(),
-                            ],
+                          child: AnimatedSwitcher(
+                            duration: Duration(
+                              milliseconds: threeHundredDotNil.toInt(),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.wifi,
+                                  color:
+                                      connectionModeValue == ConnectionMode.wifi
+                                          ? Colors.white
+                                          : Colors.grey,
+                                  size:
+                                      connectionModeValue == ConnectionMode.wifi
+                                          ? veryLargePadding
+                                          : veryLargePadding - smallPadding,
+                                ),
+                                if (connectionModeValue == ConnectionMode.wifi)
+                                  const SizedBox(
+                                    width: padding,
+                                  )
+                                else
+                                  const SizedBox.shrink(),
+                                if (connectionModeValue == ConnectionMode.wifi)
+                                  const Text(
+                                    wifiText,
+                                    style: TextStyle(
+                                      fontSize: largePadding,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                else
+                                  const SizedBox.shrink(),
+                                if (connectionModeValue == ConnectionMode.wifi)
+                                  const SizedBox(
+                                    width: padding,
+                                  )
+                                else
+                                  const SizedBox.shrink(),
+                                if (connectionModeValue == ConnectionMode.wifi)
+                                  const SizedBox(
+                                    width: veryLargePadding + largePadding,
+                                    height: veryLargePadding + largePadding,
+                                    child: RiveAnimation.asset(
+                                      canGoNextAnimationRiveAsset,
+                                    ),
+                                  )
+                                else
+                                  const SizedBox.shrink(),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: veryLargePadding,
-                  ),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(
-                      veryLargePadding,
+                    const SizedBox(
+                      height: veryLargePadding,
                     ),
-                    onTap: () {
-                      if (connectionModeValue != ConnectionMode.bluetooth) {
-                        _connectionMode.value = ConnectionMode.bluetooth;
-                        if (_shouldShowInfo) {
-                          showTopSnackbar(
-                            context,
-                            tapSelectedAgainToProceedText,
+                    InkWell(
+                      borderRadius: BorderRadius.circular(
+                        veryLargePadding,
+                      ),
+                      onTap: () {
+                        if (connectionModeValue != ConnectionMode.bluetooth) {
+                          _connectionMode.value = ConnectionMode.bluetooth;
+                        } else {
+                          BlocProvider.of<ScreenToShowCubit>(context)
+                              .setScreenToShow(
+                            ScreenToShow.bluetoothOps,
                           );
-                          _shouldShowInfo = false;
                         }
-                      } else {
-                        Navigator.of(context).pushReplacementNamed(
-                          bluetoothOpsScreenRoute,
-                        );
-                      }
-                    },
-                    child: AnimatedContainer(
-                      duration: Duration(
-                        milliseconds: threeHundredDotNil.toInt(),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: padding,
-                        vertical: smallPadding,
-                      ),
-                      decoration: BoxDecoration(
-                        color: connectionModeValue == ConnectionMode.bluetooth
-                            ? baseColor
-                            : null,
-                        border: connectionModeValue == ConnectionMode.bluetooth
-                            ? null
-                            : Border.all(
-                                color: Colors.grey,
-                              ),
-                        borderRadius: BorderRadius.circular(
-                          veryLargePadding,
-                        ),
-                      ),
-                      child: AnimatedSize(
+                      },
+                      child: AnimatedContainer(
                         duration: Duration(
                           milliseconds: threeHundredDotNil.toInt(),
                         ),
-                        child: AnimatedSwitcher(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: padding,
+                          vertical:
+                              connectionModeValue == ConnectionMode.bluetooth
+                                  ? nil
+                                  : smallPadding,
+                        ),
+                        decoration: BoxDecoration(
+                          color: connectionModeValue == ConnectionMode.bluetooth
+                              ? baseColor
+                              : null,
+                          border:
+                              connectionModeValue == ConnectionMode.bluetooth
+                                  ? null
+                                  : Border.all(
+                                      color: Colors.grey,
+                                    ),
+                          borderRadius: BorderRadius.circular(
+                            veryLargePadding,
+                          ),
+                        ),
+                        child: AnimatedSize(
                           duration: Duration(
                             milliseconds: threeHundredDotNil.toInt(),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.bluetooth,
-                                color: connectionModeValue ==
-                                        ConnectionMode.bluetooth
-                                    ? Colors.white
-                                    : Colors.grey,
-                                size: connectionModeValue ==
-                                        ConnectionMode.bluetooth
-                                    ? veryLargePadding
-                                    : veryLargePadding - smallPadding,
-                              ),
-                              if (connectionModeValue ==
-                                  ConnectionMode.bluetooth)
-                                const SizedBox(
-                                  width: nil,
-                                )
-                              else
-                                const SizedBox.shrink(),
-                              if (connectionModeValue ==
-                                  ConnectionMode.bluetooth)
-                                const Text(
-                                  bluetoothText,
-                                  style: TextStyle(
-                                    fontSize: largePadding,
-                                    color: Colors.white,
-                                  ),
-                                )
-                              else
-                                const SizedBox.shrink(),
-                            ],
+                          child: AnimatedSwitcher(
+                            duration: Duration(
+                              milliseconds: threeHundredDotNil.toInt(),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.bluetooth,
+                                  color: connectionModeValue ==
+                                          ConnectionMode.bluetooth
+                                      ? Colors.white
+                                      : Colors.grey,
+                                  size: connectionModeValue ==
+                                          ConnectionMode.bluetooth
+                                      ? veryLargePadding
+                                      : veryLargePadding - smallPadding,
+                                ),
+                                if (connectionModeValue ==
+                                    ConnectionMode.bluetooth)
+                                  const SizedBox(
+                                    width: nil,
+                                  )
+                                else
+                                  const SizedBox.shrink(),
+                                if (connectionModeValue ==
+                                    ConnectionMode.bluetooth)
+                                  const Text(
+                                    bluetoothText,
+                                    style: TextStyle(
+                                      fontSize: largePadding,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                else
+                                  const SizedBox.shrink(),
+                                if (connectionModeValue ==
+                                    ConnectionMode.bluetooth)
+                                  const SizedBox(
+                                    width: smallPadding,
+                                  )
+                                else
+                                  const SizedBox.shrink(),
+                                if (connectionModeValue ==
+                                    ConnectionMode.bluetooth)
+                                  const SizedBox(
+                                    width: veryLargePadding + largePadding,
+                                    height: veryLargePadding + largePadding,
+                                    child: RiveAnimation.asset(
+                                      canGoNextAnimationRiveAsset,
+                                    ),
+                                  )
+                                else
+                                  const SizedBox.shrink(),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

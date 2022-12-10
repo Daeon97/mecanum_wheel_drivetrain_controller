@@ -9,6 +9,7 @@ import 'package:mecanum_wheel_drivetrain_controller/repos/repos.dart';
 import 'package:mecanum_wheel_drivetrain_controller/utils/utils.dart';
 
 part 'bluetooth_event.dart';
+
 part 'bluetooth_state.dart';
 
 class BluetoothBloc extends Bloc<BluetoothEvent, BluetoothState> {

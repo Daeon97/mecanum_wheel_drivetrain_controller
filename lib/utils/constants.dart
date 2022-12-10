@@ -6,6 +6,7 @@ const defaultScreenRoute = '/';
 const bluetoothOpsScreenRoute = '/bluetoothOpsScreen';
 const controllerScreenRoute = '/controllerScreen';
 const selectConnectionScreenRoute = '/selectConnection';
+const wifiOpsScreenRoute = '/wifiOpsScreen';
 
 const baseColor = Color(0xFF3309FD);
 
@@ -25,6 +26,9 @@ const threeHundredDotNil = 300.0;
 
 const bluetoothAnimationRiveAsset = 'assets/bluetooth.riv';
 const bluetoothAnimationName = 'scan';
+
+const canGoNextAnimationRiveAsset = 'assets/can_go_next.riv';
+const canGoNextAnimationName = 'Can Go Next Animation';
 
 const waitingForBluetoothScanPermissionText =
     'Waiting for bluetooth scan permission';
@@ -49,3 +53,4 @@ const leaveHereText = 'Leave Here';
 const wifiText = 'WIFI';
 const bluetoothText = 'Bluetooth';
 const tapSelectedAgainToProceedText = 'Tap selected again to proceed';
+const selectConnectionModeText = 'Select a connection mode to proceed';

@@ -3,6 +3,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:mecanum_wheel_drivetrain_controller/models/models.dart';
+import 'package:mecanum_wheel_drivetrain_controller/utils/utils.dart' as utils;
 
 part 'screen_to_show_state.dart';
 
@@ -11,6 +12,18 @@ class ScreenToShowCubit extends HydratedCubit<ScreenToShowState> {
       : super(
           const ScreenToShowInitialState(),
         );
+
+  void setScreenToShow(
+    utils.ScreenToShow screenToShow,
+  ) {
+    emit(
+      ShowScreenState(
+        ScreenToShow(
+          screenToShow: screenToShow,
+        ),
+      ),
+    );
+  }
 
   @override
   ScreenToShowState? fromJson(Map<String, dynamic> json) {

@@ -10,4 +10,10 @@ class PermissionsRepo {
 
   Future<PermissionStatus> get requestBluetoothScanPermission =>
       Permission.bluetoothScan.request();
+
+  Future<Map<Permission, PermissionStatus>>
+      get requestBluetoothScanAndConnectPermissions => [
+            Permission.bluetoothScan,
+            Permission.bluetoothConnect,
+          ].request();
 }

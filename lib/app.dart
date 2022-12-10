@@ -65,13 +65,30 @@ class App extends StatelessWidget {
         builder: (_) {
           switch (routeSettings.name) {
             case defaultScreenRoute:
-              return const SelectConnectionScreen();
+              return BlocBuilder<ScreenToShowCubit, ScreenToShowState>(
+                builder: (_, screenToShowState) {
+                  if (screenToShowState is ShowScreenState) {
+                    switch (screenToShowState.screenToShow.screenToShow) {
+                      case ScreenToShow.selectConnection:
+                        return const SelectConnectionScreen();
+                      case ScreenToShow.bluetoothOps:
+                        return const BluetoothOpsScreen();
+                      case ScreenToShow.wifiOps:
+                        return const WifiOpsScreen();
+                    }
+                  } else {
+                    return const SelectConnectionScreen();
+                  }
+                },
+              );
             case bluetoothOpsScreenRoute:
               return const BluetoothOpsScreen();
             case controllerScreenRoute:
               return const ControllerScreen();
             case selectConnectionScreenRoute:
               return const SelectConnectionScreen();
+            case wifiOpsScreenRoute:
+              return const WifiOpsScreen();
             default:
               return const SizedBox.shrink();
           }
