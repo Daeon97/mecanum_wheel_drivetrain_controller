@@ -14,22 +14,24 @@ class BluetoothRepo {
 
   Future<bool> get isBluetoothAvailable => _flutterBlue.isAvailable;
 
-  Future<bool> get isBluetoothOn => _flutterBlue.isOn;
+  Future<bool> get isBluetoothOn => _flutterBlue.isOn; // not used
 
   Future<bool?> turnBluetoothOn() => _flutterBluetoothSerial.requestEnable();
 
-  Future<bool?> turnBluetoothOff() => _flutterBluetoothSerial.requestDisable();
+  Future<bool?> turnBluetoothOff() =>
+      _flutterBluetoothSerial.requestDisable(); // not used
 
   Future<void> openBluetoothSettings() =>
       _flutterBluetoothSerial.openSettings();
 
   Stream<f_b.BluetoothState> get bluetoothState => _flutterBlue.state;
 
-// g() startScan
+  Stream<f_b_s.BluetoothDiscoveryResult> get bluetoothDevices =>
+      _flutterBluetoothSerial.startDiscovery();
 
-// Stream<f_b_s.BluetoothDiscoveryResult> get fbBluetoothDevices =>
-//     _flutterBluetoothSerial.startDiscovery();
+  Future<dynamic> startScan(Duration? timeout) => _flutterBlue.startScan(
+        timeout: timeout,
+      );
 
-// Stream<f_b_s.BluetoothDiscoveryResult> get fbsBluetoothDevices =>
-//     _flutterBluetoothSerial.startDiscovery();
+  Stream<List<f_b.ScanResult>> get scanResults => _flutterBlue.scanResults;
 }

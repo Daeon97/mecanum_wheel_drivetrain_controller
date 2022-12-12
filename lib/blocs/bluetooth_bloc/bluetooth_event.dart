@@ -34,8 +34,28 @@ class ListenBluetoothStateEvent extends BluetoothEvent {
   List<Object?> get props => [];
 }
 
-class StopListeningBluetoothStateEvent extends BluetoothEvent {
-  const StopListeningBluetoothStateEvent();
+class ListenBluetoothDevicesEvent extends BluetoothEvent {
+  const ListenBluetoothDevicesEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class FoundBluetoothDevicesEvent extends BluetoothEvent {
+  const FoundBluetoothDevicesEvent(
+    this.bluetoothDevices,
+  );
+
+  final List<models.BluetoothDevice> bluetoothDevices;
+
+  @override
+  List<Object?> get props => [
+        bluetoothDevices,
+      ];
+}
+
+class StopListeningBluetoothDevicesAndStateEvent extends BluetoothEvent {
+  const StopListeningBluetoothDevicesAndStateEvent();
 
   @override
   List<Object?> get props => [];

@@ -31,7 +31,7 @@ class _BluetoothOpsScreenState extends State<BluetoothOpsScreen> {
   @override
   void deactivate() {
     BlocProvider.of<BluetoothBloc>(context).add(
-      const StopListeningBluetoothStateEvent(),
+      const StopListeningBluetoothDevicesAndStateEvent(),
     );
     super.deactivate();
   }
@@ -49,41 +49,34 @@ class _BluetoothOpsScreenState extends State<BluetoothOpsScreen> {
           if (bluetoothAvailabilityState is BluetoothAvailableState) {
             BlocProvider.of<BluetoothPermissionCubit>(context)
                 .requestPermission(
-              BluetoothPermissionType.bluetoothScan,
+              BluetoothPermissionType.bluetoothScanAndConnect,
             );
           }
         },
         child: BlocListener<BluetoothPermissionCubit, BluetoothPermissionState>(
           listener: (_, bluetoothPermissionState) {
-            if (bluetoothPermissionState is BluetoothPermissionGrantedState) {
-              if (bluetoothPermissionState.bluetoothPermissionType ==
-                  BluetoothPermissionType.bluetoothScan) {
-                BlocProvider.of<BluetoothPermissionCubit>(context)
-                    .requestPermission(
-                  BluetoothPermissionType.bluetoothConnect,
-                );
-              } else if (bluetoothPermissionState.bluetoothPermissionType ==
-                  BluetoothPermissionType.bluetoothConnect) {
-                BlocProvider.of<BluetoothBloc>(context).add(
-                  const ListenBluetoothStateEvent(),
-                );
-              }
+            if (bluetoothPermissionState is BluetoothPermissionGrantedState &&
+                bluetoothPermissionState.bluetoothPermissionType ==
+                    BluetoothPermissionType.bluetoothScanAndConnect) {
+              BlocProvider.of<BluetoothBloc>(context).add(
+                const ListenBluetoothStateEvent(),
+              );
             }
           },
           child: Scaffold(
-            body: Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(
-                  padding,
-                ),
-                child: BlocBuilder<BluetoothAvailabilityCubit,
-                    BluetoothAvailabilityState>(
-                  builder: (
-                    _,
-                    bluetoothAvailabilityState,
-                  ) =>
-                      bluetoothAvailabilityState is BluetoothNotAvailableState
-                          ? Column(
+            body: BlocBuilder<BluetoothAvailabilityCubit,
+                BluetoothAvailabilityState>(
+              builder: (
+                _,
+                bluetoothAvailabilityState,
+              ) =>
+                  bluetoothAvailabilityState is BluetoothNotAvailableState
+                      ? Center(
+                          child: SingleChildScrollView(
+                            padding: const EdgeInsets.all(
+                              padding,
+                            ),
+                            child: Column(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -124,16 +117,23 @@ class _BluetoothOpsScreenState extends State<BluetoothOpsScreen> {
                                   ),
                                 ),
                               ],
-                            )
-                          : BlocBuilder<BluetoothPermissionCubit,
-                              BluetoothPermissionState>(
-                              builder: (
-                                bluetoothPermissionCtx,
-                                bluetoothPermissionState,
-                              ) =>
-                                  bluetoothPermissionState
-                                          is RequestingBluetoothPermissionState
-                                      ? Column(
+                            ),
+                          ),
+                        )
+                      : BlocBuilder<BluetoothPermissionCubit,
+                          BluetoothPermissionState>(
+                          builder: (
+                            bluetoothPermissionCtx,
+                            bluetoothPermissionState,
+                          ) =>
+                              bluetoothPermissionState
+                                      is RequestingBluetoothPermissionState
+                                  ? Center(
+                                      child: SingleChildScrollView(
+                                        padding: const EdgeInsets.all(
+                                          padding,
+                                        ),
+                                        child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -152,10 +152,17 @@ class _BluetoothOpsScreenState extends State<BluetoothOpsScreen> {
                                               textAlign: TextAlign.center,
                                             ),
                                           ],
-                                        )
-                                      : bluetoothPermissionState
-                                              is BluetoothPermissionDeniedState
-                                          ? Column(
+                                        ),
+                                      ),
+                                    )
+                                  : bluetoothPermissionState
+                                          is BluetoothPermissionDeniedState
+                                      ? Center(
+                                          child: SingleChildScrollView(
+                                            padding: const EdgeInsets.all(
+                                              padding,
+                                            ),
+                                            child: Column(
                                               mainAxisSize: MainAxisSize.min,
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
@@ -192,10 +199,17 @@ class _BluetoothOpsScreenState extends State<BluetoothOpsScreen> {
                                                   ),
                                                 ),
                                               ],
-                                            )
-                                          : bluetoothPermissionState
-                                                  is BluetoothPermissionCannotBeRequestedState
-                                              ? Column(
+                                            ),
+                                          ),
+                                        )
+                                      : bluetoothPermissionState
+                                              is BluetoothPermissionCannotBeRequestedState
+                                          ? Center(
+                                              child: SingleChildScrollView(
+                                                padding: const EdgeInsets.all(
+                                                  padding,
+                                                ),
+                                                child: Column(
                                                   mainAxisSize:
                                                       MainAxisSize.min,
                                                   mainAxisAlignment:
@@ -232,16 +246,26 @@ class _BluetoothOpsScreenState extends State<BluetoothOpsScreen> {
                                                       ),
                                                     ),
                                                   ],
-                                                )
-                                              : BlocBuilder<BluetoothBloc,
-                                                  BluetoothState>(
-                                                  builder: (
-                                                    bluetoothCtx,
-                                                    bluetoothState,
-                                                  ) =>
-                                                      bluetoothState
-                                                              is BluetoothOffState
-                                                          ? Column(
+                                                ),
+                                              ),
+                                            )
+                                          : BlocBuilder<BluetoothBloc,
+                                              BluetoothState>(
+                                              builder: (
+                                                bluetoothCtx,
+                                                bluetoothState,
+                                              ) =>
+                                                  bluetoothState
+                                                          is BluetoothOffState
+                                                      ? Center(
+                                                          child:
+                                                              SingleChildScrollView(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(
+                                                              padding,
+                                                            ),
+                                                            child: Column(
                                                               mainAxisSize:
                                                                   MainAxisSize
                                                                       .min,
@@ -288,13 +312,68 @@ class _BluetoothOpsScreenState extends State<BluetoothOpsScreen> {
                                                                   ),
                                                                 ),
                                                               ],
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : bluetoothState
+                                                              is FoundBluetoothDevicesState
+                                                          ? Column(
+                                                              children: [
+                                                                Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                    left:
+                                                                        padding,
+                                                                  ),
+                                                                  child: Row(
+                                                                    children: const [
+                                                                      Expanded(
+                                                                        child:
+                                                                            Text(
+                                                                          scanningForAvailableDevicesText,
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            extraLargePadding,
+                                                                        height:
+                                                                            extraLargePadding,
+                                                                        child: RiveAnimation
+                                                                            .asset(
+                                                                          bluetoothAnimationRiveAsset,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  child: ListView
+                                                                      .builder(
+                                                                    itemCount: bluetoothState
+                                                                        .bluetoothDevices
+                                                                        .length,
+                                                                    itemBuilder:
+                                                                        (_, index) =>
+                                                                            ListTile(
+                                                                      title:
+                                                                          Text(
+                                                                        bluetoothState.bluetoothDevices[index].name ??
+                                                                            bluetoothState.bluetoothDevices[index].address,
+                                                                      ),
+                                                                      subtitle:
+                                                                          Text(
+                                                                        '${bluetoothState.bluetoothDevices[index].paired ? pairedText : notPairedText}${commaText} ${bluetoothState.bluetoothDevices[index].connected ? connectedText : notConnectedText}',
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             )
                                                           : const SizedBox
                                                               .shrink(),
-                                                ),
-                            ),
-                ),
-              ),
+                                            ),
+                        ),
             ),
           ),
         ),

@@ -21,64 +21,61 @@ class BluetoothPermissionCubit extends Cubit<BluetoothPermissionState> {
     BluetoothPermissionType bluetoothPermissionType,
   ) async {
     emit(
-      RequestingBluetoothPermissionState(
-        bluetoothPermissionType == BluetoothPermissionType.bluetoothScan
-            ? waitingForBluetoothScanPermissionText
-            : waitingForBluetoothConnectPermissionText,
+      const RequestingBluetoothPermissionState(
+        waitingForBluetoothScanAndConnectPermissionsText,
       ),
     );
     switch (bluetoothPermissionType) {
-      case BluetoothPermissionType.bluetoothScan:
-        final permissionStatus =
-            await _permissionsRepo.requestBluetoothScanPermission;
-        if (permissionStatus.isGranted) {
-          emit(
-            BluetoothPermissionGrantedState(
-              bluetoothPermissionType,
-            ),
-          );
-        } else if (permissionStatus.isDenied) {
-          emit(
-            BluetoothPermissionDeniedState(
-              bluetoothPermissionType,
-              bluetoothScanPermissionDeniedMessageText,
-            ),
-          );
-        } else {
-          emit(
-            BluetoothPermissionCannotBeRequestedState(
-              bluetoothPermissionType,
-              bluetoothScanPermissionCannotBeRequestedMessageText,
-            ),
-          );
-        }
-        break;
-      case BluetoothPermissionType.bluetoothConnect:
-        final permissionStatus =
-            await _permissionsRepo.requestBluetoothConnectPermission;
-        if (permissionStatus.isGranted) {
-          emit(
-            BluetoothPermissionGrantedState(
-              bluetoothPermissionType,
-            ),
-          );
-        } else if (permissionStatus.isDenied) {
-          emit(
-            BluetoothPermissionDeniedState(
-              bluetoothPermissionType,
-              bluetoothConnectPermissionDeniedMessageText,
-            ),
-          );
-        } else {
-          emit(
-            BluetoothPermissionCannotBeRequestedState(
-              bluetoothPermissionType,
-              bluetoothConnectPermissionCannotBeRequestedMessageText,
-            ),
-          );
-        }
-        break;
       case BluetoothPermissionType.bluetoothScanAndConnect:
+        final result =
+            await _permissionsRepo.requestBluetoothScanAndConnectPermissions;
+
+        final bluetoothScanPermissionStatus =
+            result[_permissionsRepo.bluetoothScanPermission]!;
+        final bluetoothConnectPermissionStatus =
+            result[_permissionsRepo.bluetoothConnectPermission]!;
+
+        if (bluetoothScanPermissionStatus.isGranted &&
+            bluetoothConnectPermissionStatus.isGranted) {
+          emit(
+            BluetoothPermissionGrantedState(
+              bluetoothPermissionType,
+            ),
+          );
+        } else if (bluetoothScanPermissionStatus.isDenied &&
+            bluetoothConnectPermissionStatus.isDenied) {
+          emit(
+            BluetoothPermissionDeniedState(
+              bluetoothPermissionType,
+              bluetoothScanAndConnectPermissionsDeniedMessageText,
+            ),
+          );
+        } else {
+          if (bluetoothScanPermissionStatus.isGranted &&
+              bluetoothConnectPermissionStatus.isDenied) {
+            emit(
+              BluetoothPermissionDeniedState(
+                bluetoothPermissionType,
+                bluetoothConnectPermissionDeniedMessageText,
+              ),
+            );
+          } else if (bluetoothConnectPermissionStatus.isGranted &&
+              bluetoothScanPermissionStatus.isDenied) {
+            emit(
+              BluetoothPermissionDeniedState(
+                bluetoothPermissionType,
+                bluetoothScanPermissionDeniedMessageText,
+              ),
+            );
+          } else {
+            emit(
+              BluetoothPermissionCannotBeRequestedState(
+                bluetoothPermissionType,
+                bluetoothScanAndConnectPermissionsCannotBeRequestedMessageText,
+              ),
+            );
+          }
+        }
         break;
     }
   }

@@ -55,7 +55,7 @@ class _SelectConnectionScreenState extends State<SelectConnectionScreen> {
                       ),
                     ),
                     const SizedBox(
-                      height: veryLargePadding,
+                      height: largePadding + padding,
                     ),
                     InkWell(
                       borderRadius: BorderRadius.circular(
@@ -155,7 +155,7 @@ class _SelectConnectionScreenState extends State<SelectConnectionScreen> {
                       ),
                     ),
                     const SizedBox(
-                      height: veryLargePadding,
+                      height: largePadding + padding,
                     ),
                     InkWell(
                       borderRadius: BorderRadius.circular(
