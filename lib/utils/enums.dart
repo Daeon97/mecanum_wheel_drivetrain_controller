@@ -14,3 +14,10 @@ enum ScreenToShow {
   bluetoothOps,
   wifiOps,
 }
+
+enum BluetoothDeviceType {
+  unknown,
+  classic,
+  lowEnergy,
+  dual,
+}

@@ -76,7 +76,7 @@ class _SelectConnectionScreenState extends State<SelectConnectionScreen> {
                           milliseconds: threeHundredDotNil.toInt(),
                         ),
                         padding: EdgeInsets.symmetric(
-                          horizontal: padding,
+                          horizontal: smallPadding,
                           vertical: connectionModeValue == ConnectionMode.wifi
                               ? nil
                               : smallPadding,
@@ -176,7 +176,7 @@ class _SelectConnectionScreenState extends State<SelectConnectionScreen> {
                           milliseconds: threeHundredDotNil.toInt(),
                         ),
                         padding: EdgeInsets.symmetric(
-                          horizontal: padding,
+                          horizontal: smallPadding,
                           vertical:
                               connectionModeValue == ConnectionMode.bluetooth
                                   ? nil

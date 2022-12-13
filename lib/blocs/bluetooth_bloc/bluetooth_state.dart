@@ -41,3 +41,16 @@ class FoundBluetoothDevicesState extends BluetoothState {
         bluetoothDevices,
       ];
 }
+
+// class FoundBluetoothDevicesState extends BluetoothState {
+//   const FoundBluetoothDevicesState(
+//       this.bluetoothDevices,
+//       );
+//
+//   final List<models.BluetoothDevice> bluetoothDevices;
+//
+//   @override
+//   List<Object?> get props => [
+//     bluetoothDevices,
+//   ];
+// }

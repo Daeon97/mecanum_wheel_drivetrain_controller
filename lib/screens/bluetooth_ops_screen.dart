@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs
+// ignore_for_file: public_member_api_docs, lines_longer_than_80_chars
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -317,58 +317,70 @@ class _BluetoothOpsScreenState extends State<BluetoothOpsScreen> {
                                                         )
                                                       : bluetoothState
                                                               is FoundBluetoothDevicesState
-                                                          ? Column(
-                                                              children: [
-                                                                Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .only(
-                                                                    left:
-                                                                        padding,
-                                                                  ),
-                                                                  child: Row(
+                                                          ? RefreshIndicator(
+                                                              onRefresh:
+                                                                  () async {
+                                                                bluetoothCtx
+                                                                    .read<
+                                                                        BluetoothBloc>()
+                                                                    .add(
+                                                                      const ListenBluetoothStateEvent(),
+                                                                    );
+                                                              },
+                                                              child: ListView
+                                                                  .builder(
+                                                                itemCount:
+                                                                    bluetoothState
+                                                                        .bluetoothDevices
+                                                                        .length,
+                                                                itemBuilder: (_,
+                                                                        index) =>
+                                                                    ListTile(
+                                                                  leading: Row(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
                                                                     children: const [
-                                                                      Expanded(
-                                                                        child:
-                                                                            Text(
-                                                                          scanningForAvailableDevicesText,
-                                                                        ),
+                                                                      Icon(
+                                                                        Icons
+                                                                            .devices,
                                                                       ),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            extraLargePadding,
-                                                                        height:
-                                                                            extraLargePadding,
-                                                                        child: RiveAnimation
-                                                                            .asset(
-                                                                          bluetoothAnimationRiveAsset,
+                                                                      Align(
+                                                                        alignment:
+                                                                            AlignmentDirectional.bottomCenter,
+                                                                        child:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .bluetooth,
                                                                         ),
                                                                       ),
                                                                     ],
                                                                   ),
-                                                                ),
-                                                                Expanded(
-                                                                  child: ListView
-                                                                      .builder(
-                                                                    itemCount: bluetoothState
-                                                                        .bluetoothDevices
-                                                                        .length,
-                                                                    itemBuilder:
-                                                                        (_, index) =>
-                                                                            ListTile(
-                                                                      title:
-                                                                          Text(
-                                                                        bluetoothState.bluetoothDevices[index].name ??
-                                                                            bluetoothState.bluetoothDevices[index].address,
-                                                                      ),
-                                                                      subtitle:
-                                                                          Text(
-                                                                        '${bluetoothState.bluetoothDevices[index].paired ? pairedText : notPairedText}${commaText} ${bluetoothState.bluetoothDevices[index].connected ? connectedText : notConnectedText}',
-                                                                      ),
-                                                                    ),
+                                                                  title: Text(
+                                                                    bluetoothState
+                                                                            .bluetoothDevices[
+                                                                                index]
+                                                                            .name ??
+                                                                        bluetoothState
+                                                                            .bluetoothDevices[index]
+                                                                            .address,
                                                                   ),
+                                                                  subtitle:
+                                                                      Text(
+                                                                    '${bluetoothState.bluetoothDevices[index].paired ? pairedText : notPairedText}${commaText} ${bluetoothState.bluetoothDevices[index].connected ? connectedText : notConnectedText}',
+                                                                  ),
+                                                                  onTap: () {
+                                                                    bluetoothCtx
+                                                                        .read<
+                                                                            BluetoothBloc>()
+                                                                        .add(
+                                                                          InitiateBluetoothPairingRequestEvent(
+                                                                            bluetoothState.bluetoothDevices[index],
+                                                                          ),
+                                                                        );
+                                                                  },
                                                                 ),
-                                                              ],
+                                                              ),
                                                             )
                                                           : const SizedBox
                                                               .shrink(),

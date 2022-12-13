@@ -72,7 +72,7 @@ class App extends StatelessWidget {
                       case ScreenToShow.selectConnection:
                         return const SelectConnectionScreen();
                       case ScreenToShow.bluetoothOps:
-                        return const BluetoothOpsScreen();
+                        return const PairedBluetoothDevicesScreen();
                       case ScreenToShow.wifiOps:
                         return const WifiOpsScreen();
                     }
@@ -85,6 +85,8 @@ class App extends StatelessWidget {
               return const BluetoothOpsScreen();
             case controllerScreenRoute:
               return const ControllerScreen();
+            case pairedBluetoothDevicesScreenRoute:
+              return const PairedBluetoothDevicesScreen();
             case selectConnectionScreenRoute:
               return const SelectConnectionScreen();
             case wifiOpsScreenRoute:

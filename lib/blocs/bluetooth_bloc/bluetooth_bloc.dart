@@ -17,7 +17,6 @@ part 'bluetooth_event.dart';
 part 'bluetooth_state.dart';
 
 class BluetoothBloc extends Bloc<BluetoothEvent, BluetoothState> {
-
   BluetoothBloc(
     BluetoothRepo bluetoothRepo,
   ) : super(
@@ -38,12 +37,16 @@ class BluetoothBloc extends Bloc<BluetoothEvent, BluetoothState> {
           _bluetoothStateStreamSubscription = null;
         }
         _bluetoothStateStreamSubscription = bluetoothRepo.bluetoothState.listen(
-          (bluetoothState) {
+          (bluetoothState) async {
             if (bluetoothState == f_b.BluetoothState.on) {
               add(
                 const ListenBluetoothDevicesEvent(),
               );
             } else if (bluetoothState == f_b.BluetoothState.off) {
+              if (_bluetoothDevicesStreamSubscription != null) {
+                await _bluetoothDevicesStreamSubscription!.cancel();
+                _bluetoothDevicesStreamSubscription = null;
+              }
               add(
                 const BluetoothOffEvent(
                   bluetoothOffMessageText,
@@ -69,32 +72,40 @@ class BluetoothBloc extends Bloc<BluetoothEvent, BluetoothState> {
           await _bluetoothDevicesStreamSubscription!.cancel();
           _bluetoothDevicesStreamSubscription = null;
         }
-        bluetoothRepo.bluetoothDevices.listen(
-          (bluetoothDiscoveryResult) {},
+        final bluetoothDevicesEntry = <String, f_b_s.BluetoothDevice>{};
+        _bluetoothDevicesStreamSubscription =
+            bluetoothRepo.bluetoothDevices.listen(
+          (bluetoothDiscoveryResult) {
+            bluetoothDevicesEntry.putIfAbsent(
+              bluetoothDiscoveryResult.device.address,
+              () => bluetoothDiscoveryResult.device,
+            );
+            final bluetoothDevices = <models.BluetoothDevice>[];
+            for (final bluetoothDevice in bluetoothDevicesEntry.values) {
+              bluetoothDevices.add(
+                models.BluetoothDevice(
+                  name: bluetoothDevice.name,
+                  address: bluetoothDevice.address,
+                  bluetoothDeviceType: bluetoothRepo.computeBluetoothDeviceType(
+                    bluetoothDiscoveryResult.device,
+                  ),
+                  paired: bluetoothDevice.isBonded,
+                  connected: bluetoothDevice.isConnected,
+                ),
+              );
+            }
+            add(
+              FoundBluetoothDevicesEvent(
+                bluetoothDevices,
+              ),
+            );
+          },
+          onDone: () async {
+            await _bluetoothDevicesStreamSubscription!.cancel();
+            _bluetoothDevicesStreamSubscription = null;
+          },
         );
-        // _bluetoothDevicesStreamSubscription =
-        //     bluetoothRepo.bluetoothDevices.toList().asStream().listen(
-        //   (bluetoothDiscoveryResults) {
-        //     final bluetoothDevices = <models.BluetoothDevice>[];
-        //     for (final bluetoothDiscoveryResult in bluetoothDiscoveryResults) {
-        //       bluetoothDevices.add(
-        //         models.BluetoothDevice(
-        //           address: bluetoothDiscoveryResult.device.address,
-        //           name: bluetoothDiscoveryResult.device.name,
-        //           paired: bluetoothDiscoveryResult.device.isBonded,
-        //           connected: bluetoothDiscoveryResult.device.isConnected,
-        //         ),
-        //       );
-        //     }
-        //     add(
-        //       FoundBluetoothDevicesEvent(
-        //         bluetoothDevices,
-        //       ),
-        //     );
-        //   },
-        // );
       },
-      // transformer: () {},
     );
     on<FoundBluetoothDevicesEvent>(
       (event, emit) async {
@@ -103,6 +114,18 @@ class BluetoothBloc extends Bloc<BluetoothEvent, BluetoothState> {
             event.bluetoothDevices,
           ),
         );
+      },
+    );
+    on<InitiateBluetoothPairingRequestEvent>(
+      (event, emit) async {
+        final pairingRequestResult = await bluetoothRepo.pairBluetoothDevice(
+          event.bluetoothDevice.address,
+        );
+        // if (connectionResult == null || !connectionResult) {
+        //   //.
+        // } else {
+        //
+        // }
       },
     );
     on<StopListeningBluetoothDevicesAndStateEvent>(
@@ -120,6 +143,6 @@ class BluetoothBloc extends Bloc<BluetoothEvent, BluetoothState> {
   }
 
   StreamSubscription<f_b.BluetoothState>? _bluetoothStateStreamSubscription;
-  StreamSubscription<List<f_b_s.BluetoothDiscoveryResult>>?
+  StreamSubscription<f_b_s.BluetoothDiscoveryResult>?
       _bluetoothDevicesStreamSubscription;
 }

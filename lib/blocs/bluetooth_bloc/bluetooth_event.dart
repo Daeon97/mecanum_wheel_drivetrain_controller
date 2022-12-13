@@ -54,6 +54,19 @@ class FoundBluetoothDevicesEvent extends BluetoothEvent {
       ];
 }
 
+class InitiateBluetoothPairingRequestEvent extends BluetoothEvent {
+  const InitiateBluetoothPairingRequestEvent(
+    this.bluetoothDevice,
+  );
+
+  final models.BluetoothDevice bluetoothDevice;
+
+  @override
+  List<Object?> get props => [
+        bluetoothDevice,
+      ];
+}
+
 class StopListeningBluetoothDevicesAndStateEvent extends BluetoothEvent {
   const StopListeningBluetoothDevicesAndStateEvent();
 

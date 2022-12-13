@@ -20,8 +20,10 @@ BluetoothDevice _$BluetoothDeviceFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$BluetoothDevice {
-  String get address => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
+  String get address => throw _privateConstructorUsedError;
+  BluetoothDeviceType get bluetoothDeviceType =>
+      throw _privateConstructorUsedError;
   bool get paired => throw _privateConstructorUsedError;
   bool get connected => throw _privateConstructorUsedError;
 
@@ -37,7 +39,12 @@ abstract class $BluetoothDeviceCopyWith<$Res> {
           BluetoothDevice value, $Res Function(BluetoothDevice) then) =
       _$BluetoothDeviceCopyWithImpl<$Res, BluetoothDevice>;
   @useResult
-  $Res call({String address, String? name, bool paired, bool connected});
+  $Res call(
+      {String? name,
+      String address,
+      BluetoothDeviceType bluetoothDeviceType,
+      bool paired,
+      bool connected});
 }
 
 /// @nodoc
@@ -53,20 +60,25 @@ class _$BluetoothDeviceCopyWithImpl<$Res, $Val extends BluetoothDevice>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? address = null,
     Object? name = freezed,
+    Object? address = null,
+    Object? bluetoothDeviceType = null,
     Object? paired = null,
     Object? connected = null,
   }) {
     return _then(_value.copyWith(
-      address: null == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as String,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
+      address: null == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as String,
+      bluetoothDeviceType: null == bluetoothDeviceType
+          ? _value.bluetoothDeviceType
+          : bluetoothDeviceType // ignore: cast_nullable_to_non_nullable
+              as BluetoothDeviceType,
       paired: null == paired
           ? _value.paired
           : paired // ignore: cast_nullable_to_non_nullable
@@ -87,7 +99,12 @@ abstract class _$$_BluetoothDeviceCopyWith<$Res>
       __$$_BluetoothDeviceCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String address, String? name, bool paired, bool connected});
+  $Res call(
+      {String? name,
+      String address,
+      BluetoothDeviceType bluetoothDeviceType,
+      bool paired,
+      bool connected});
 }
 
 /// @nodoc
@@ -101,20 +118,25 @@ class __$$_BluetoothDeviceCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? address = null,
     Object? name = freezed,
+    Object? address = null,
+    Object? bluetoothDeviceType = null,
     Object? paired = null,
     Object? connected = null,
   }) {
     return _then(_$_BluetoothDevice(
-      address: null == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as String,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
+      address: null == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as String,
+      bluetoothDeviceType: null == bluetoothDeviceType
+          ? _value.bluetoothDeviceType
+          : bluetoothDeviceType // ignore: cast_nullable_to_non_nullable
+              as BluetoothDeviceType,
       paired: null == paired
           ? _value.paired
           : paired // ignore: cast_nullable_to_non_nullable
@@ -131,8 +153,9 @@ class __$$_BluetoothDeviceCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_BluetoothDevice implements _BluetoothDevice {
   const _$_BluetoothDevice(
-      {required this.address,
-      required this.name,
+      {this.name,
+      required this.address,
+      required this.bluetoothDeviceType,
       required this.paired,
       required this.connected});
 
@@ -140,9 +163,11 @@ class _$_BluetoothDevice implements _BluetoothDevice {
       _$$_BluetoothDeviceFromJson(json);
 
   @override
+  final String? name;
+  @override
   final String address;
   @override
-  final String? name;
+  final BluetoothDeviceType bluetoothDeviceType;
   @override
   final bool paired;
   @override
@@ -150,7 +175,7 @@ class _$_BluetoothDevice implements _BluetoothDevice {
 
   @override
   String toString() {
-    return 'BluetoothDevice(address: $address, name: $name, paired: $paired, connected: $connected)';
+    return 'BluetoothDevice(name: $name, address: $address, bluetoothDeviceType: $bluetoothDeviceType, paired: $paired, connected: $connected)';
   }
 
   @override
@@ -158,8 +183,10 @@ class _$_BluetoothDevice implements _BluetoothDevice {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_BluetoothDevice &&
-            (identical(other.address, address) || other.address == address) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.address, address) || other.address == address) &&
+            (identical(other.bluetoothDeviceType, bluetoothDeviceType) ||
+                other.bluetoothDeviceType == bluetoothDeviceType) &&
             (identical(other.paired, paired) || other.paired == paired) &&
             (identical(other.connected, connected) ||
                 other.connected == connected));
@@ -167,8 +194,8 @@ class _$_BluetoothDevice implements _BluetoothDevice {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, address, name, paired, connected);
+  int get hashCode => Object.hash(
+      runtimeType, name, address, bluetoothDeviceType, paired, connected);
 
   @JsonKey(ignore: true)
   @override
@@ -186,8 +213,9 @@ class _$_BluetoothDevice implements _BluetoothDevice {
 
 abstract class _BluetoothDevice implements BluetoothDevice {
   const factory _BluetoothDevice(
-      {required final String address,
-      required final String? name,
+      {final String? name,
+      required final String address,
+      required final BluetoothDeviceType bluetoothDeviceType,
       required final bool paired,
       required final bool connected}) = _$_BluetoothDevice;
 
@@ -195,9 +223,11 @@ abstract class _BluetoothDevice implements BluetoothDevice {
       _$_BluetoothDevice.fromJson;
 
   @override
+  String? get name;
+  @override
   String get address;
   @override
-  String? get name;
+  BluetoothDeviceType get bluetoothDeviceType;
   @override
   bool get paired;
   @override

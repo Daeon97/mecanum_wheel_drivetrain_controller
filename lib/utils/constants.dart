@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 const defaultScreenRoute = '/';
+const pairedBluetoothDevicesScreenRoute = '/pairedBluetoothDevicesScreen';
 const bluetoothOpsScreenRoute = '/bluetoothOpsScreen';
 const controllerScreenRoute = '/controllerScreen';
 const selectConnectionScreenRoute = '/selectConnection';
@@ -58,3 +59,4 @@ const notConnectedText = 'Not Connected';
 const pairedText = 'Paired';
 const notPairedText = 'Not Paired';
 const commaText = ',';
+const swipeToRefreshText = 'Swipe all the way up to refresh';
