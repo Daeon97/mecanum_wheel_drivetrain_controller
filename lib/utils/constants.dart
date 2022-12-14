@@ -59,4 +59,6 @@ const notConnectedText = 'Not Connected';
 const pairedText = 'Paired';
 const notPairedText = 'Not Paired';
 const commaText = ',';
-const swipeToRefreshText = 'Swipe all the way up to refresh';
+const failedToPairBluetoothDeviceText = 'Failed to pair bluetooth device';
+const failedToConnectToBluetoothDeviceText =
+    'Failed to connect to bluetooth device';

@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
+import 'dart:convert';
+
 import 'package:flutter_blue/flutter_blue.dart' as f_b;
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart'
     as f_b_s;
@@ -15,12 +17,7 @@ class BluetoothRepo {
 
   Future<bool> get isBluetoothAvailable => _flutterBlue.isAvailable;
 
-  Future<bool> get isBluetoothOn => _flutterBlue.isOn; // not used
-
   Future<bool?> turnBluetoothOn() => _flutterBluetoothSerial.requestEnable();
-
-  Future<bool?> turnBluetoothOff() =>
-      _flutterBluetoothSerial.requestDisable(); // not used
 
   Future<void> openBluetoothSettings() =>
       _flutterBluetoothSerial.openSettings();
@@ -53,11 +50,34 @@ class BluetoothRepo {
         address,
       );
 
+  Future<bool?> unpairBluetoothDevice(
+    String address,
+  ) =>
+      _flutterBluetoothSerial.removeDeviceBondWithAddress(
+        address,
+      );
+
   Future<f_b_s.BluetoothConnection> connectToBluetoothDevice(
     String address,
   ) =>
-      f_b_s.BluetoothConnection.toAddress(address);
+      f_b_s.BluetoothConnection.toAddress(
+        address,
+      );
+
+  Future<void> disconnectFromBluetoothDevice(
+    f_b_s.BluetoothConnection bluetoothConnection, {
+    bool gracefully = true,
+  }) =>
+      gracefully ? bluetoothConnection.finish() : bluetoothConnection.close();
 
   Future<List<f_b_s.BluetoothDevice>> get pairedBluetoothDevices =>
       _flutterBluetoothSerial.getBondedDevices();
+
+  void sendDataToBluetoothDevice(
+    f_b_s.BluetoothConnection bluetoothConnection, {
+    required String data,
+  }) =>
+      bluetoothConnection.output.add(
+        ascii.encode(data),
+      );
 }

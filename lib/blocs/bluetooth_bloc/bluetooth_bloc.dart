@@ -121,11 +121,61 @@ class BluetoothBloc extends Bloc<BluetoothEvent, BluetoothState> {
         final pairingRequestResult = await bluetoothRepo.pairBluetoothDevice(
           event.bluetoothDevice.address,
         );
-        // if (connectionResult == null || !connectionResult) {
-        //   //.
-        // } else {
-        //
-        // }
+        if (pairingRequestResult == null || !pairingRequestResult) {
+          emit(
+            const PairingFailedState(
+              failedToPairBluetoothDeviceText,
+            ),
+          );
+        } else {
+          emit(
+            const PairedSuccessfullyState(),
+          );
+        }
+      },
+    );
+    on<InitiateBluetoothConnectionRequestEvent>(
+      (event, emit) async {
+        final bluetoothConnectionRequestResult =
+            await bluetoothRepo.connectToBluetoothDevice(
+          event.address,
+        );
+        if (bluetoothConnectionRequestResult.isConnected) {
+          emit(
+            const ConnectedSuccessfullyState(),
+          );
+        } else {
+          emit(
+            const ConnectionFailedState(
+              failedToConnectToBluetoothDeviceText,
+            ),
+          );
+        }
+      },
+    );
+    on<GetPairedBluetoothDevicesEvent>(
+      (event, emit) async {
+        final pairedBluetoothDevices =
+            await bluetoothRepo.pairedBluetoothDevices;
+        final bluetoothDevices = <models.BluetoothDevice>[];
+        for (final pairedBluetoothDevice in pairedBluetoothDevices) {
+          bluetoothDevices.add(
+            models.BluetoothDevice(
+              name: pairedBluetoothDevice.name,
+              address: pairedBluetoothDevice.address,
+              bluetoothDeviceType: bluetoothRepo.computeBluetoothDeviceType(
+                pairedBluetoothDevice,
+              ),
+              paired: pairedBluetoothDevice.isBonded,
+              connected: pairedBluetoothDevice.isConnected,
+            ),
+          );
+        }
+        emit(
+          GotPairedBluetoothDevicesState(
+            bluetoothDevices,
+          ),
+        );
       },
     );
     on<StopListeningBluetoothDevicesAndStateEvent>(

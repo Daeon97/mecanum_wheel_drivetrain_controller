@@ -67,6 +67,26 @@ class InitiateBluetoothPairingRequestEvent extends BluetoothEvent {
       ];
 }
 
+class InitiateBluetoothConnectionRequestEvent extends BluetoothEvent {
+  const InitiateBluetoothConnectionRequestEvent(
+    this.address,
+  );
+
+  final String address;
+
+  @override
+  List<Object?> get props => [
+        address,
+      ];
+}
+
+class GetPairedBluetoothDevicesEvent extends BluetoothEvent {
+  const GetPairedBluetoothDevicesEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class StopListeningBluetoothDevicesAndStateEvent extends BluetoothEvent {
   const StopListeningBluetoothDevicesAndStateEvent();
 
