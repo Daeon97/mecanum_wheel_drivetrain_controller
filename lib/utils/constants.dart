@@ -9,7 +9,12 @@ const controllerScreenRoute = '/controllerScreen';
 const selectConnectionScreenRoute = '/selectConnection';
 const wifiOpsScreenRoute = '/wifiOpsScreen';
 
-const baseColor = Color(0xFF3309FD);
+const baseColor = Colors.white;
+
+final white15 = Colors.white.withOpacity(0.15);
+final white24 = Colors.white.withOpacity(0.24);
+final white34 = Colors.white.withOpacity(0.34);
+final white74 = Colors.white.withOpacity(0.74);
 
 const extraLargePadding = 128.0;
 const veryLargePadding = 64.0;
@@ -25,11 +30,19 @@ const nilDotSeven = 0.7;
 
 const threeHundredDotNil = 300.0;
 
+const oneTwentySixDotNil = 126.0;
+const oneFiftySevenDotSevenFive = 157.75;
+
 const bluetoothAnimationRiveAsset = 'assets/bluetooth.riv';
 const bluetoothAnimationName = 'scan';
 
 const canGoNextAnimationRiveAsset = 'assets/can_go_next.riv';
 const canGoNextAnimationName = 'Can Go Next Animation';
+
+const connectionModeButtonAnimationRiveAsset = 'assets/connection_mode_button_animation.riv';
+const connectionModeButtonAnimationStateMachineName = 'State Machine 1';
+const modeSMIInputForConnectionModeButtonAnimationStateMachine = 'Mode';
+const selectedSMIInputForConnectionModeButtonAnimationStateMachine = 'Selected';
 
 const bluetoothScanPermissionDeniedMessageText =
     'The bluetooth scan permission is required to be able to discover and pair nearby Bluetooth devices. Please grant the permission to proceed';
@@ -52,7 +65,7 @@ const leaveHereText = 'Leave Here';
 const wifiText = 'WIFI';
 const bluetoothText = 'Bluetooth';
 const tapSelectedAgainToProceedText = 'Tap selected again to proceed';
-const selectConnectionModeText = 'Select a connection mode to proceed';
+const selectModeText = 'Select Mode';
 const scanningForAvailableDevicesText = 'Scanning for available devices';
 const connectedText = 'Connected';
 const notConnectedText = 'Not Connected';
@@ -62,3 +75,4 @@ const commaText = ',';
 const failedToPairBluetoothDeviceText = 'Failed to pair bluetooth device';
 const failedToConnectToBluetoothDeviceText =
     'Failed to connect to bluetooth device';
+const nextStepText = 'Next Step';

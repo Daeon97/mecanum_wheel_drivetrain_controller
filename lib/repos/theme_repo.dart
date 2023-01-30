@@ -15,6 +15,7 @@ class ThemeRepo {
           nilDotSeven,
         ),
         errorColor: Colors.red,
+        scaffoldBackgroundColor: Colors.black,
         colorScheme: ThemeData().colorScheme.copyWith(
               brightness: Brightness.light,
               primary: baseColor,
@@ -35,12 +36,12 @@ class ThemeRepo {
             shape: MaterialStatePropertyAll<OutlinedBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(
-                  smallPadding,
+                  padding + smallPadding,
                 ),
               ),
             ),
-            backgroundColor: const MaterialStatePropertyAll<Color>(
-              baseColor,
+            backgroundColor: MaterialStatePropertyAll<Color>(
+              white24,
             ),
             padding: const MaterialStatePropertyAll<EdgeInsetsGeometry>(
               EdgeInsets.symmetric(
