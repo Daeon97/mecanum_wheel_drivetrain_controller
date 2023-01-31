@@ -16,6 +16,8 @@ final white24 = Colors.white.withOpacity(0.24);
 final white34 = Colors.white.withOpacity(0.34);
 final white74 = Colors.white.withOpacity(0.74);
 
+const green = Color(0xFF00FF38);
+
 const extraLargePadding = 128.0;
 const veryLargePadding = 64.0;
 const largePadding = 32.0;
@@ -27,11 +29,11 @@ const nil = 0.0;
 
 const nilDotThree = 0.3;
 const nilDotSeven = 0.7;
+const nilDotSevenFive = 0.75;
 
-const threeHundredDotNil = 300.0;
-
-const oneTwentySixDotNil = 126.0;
 const oneFiftySevenDotSevenFive = 157.75;
+
+const twoHundredDotNil = 200.0;
 
 const bluetoothAnimationRiveAsset = 'assets/bluetooth.riv';
 const bluetoothAnimationName = 'scan';

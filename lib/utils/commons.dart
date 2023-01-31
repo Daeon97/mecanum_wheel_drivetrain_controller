@@ -17,6 +17,9 @@ void showTopSnackbar(
     ),
     CustomSnackBar.info(
       message: message,
+      textStyle: TextStyle(
+        color: Theme.of(context).scaffoldBackgroundColor,
+      ),
       backgroundColor: Theme.of(context).primaryColor,
     ),
   );

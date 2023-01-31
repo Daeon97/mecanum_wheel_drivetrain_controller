@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mecanum_wheel_drivetrain_controller/cubits/cubits.dart';
 import 'package:mecanum_wheel_drivetrain_controller/utils/utils.dart';
+import 'package:mecanum_wheel_drivetrain_controller/widgets/widgets.dart';
 import 'package:rive/rive.dart';
 
 class SelectConnectionScreen extends StatefulWidget {
@@ -15,43 +16,6 @@ class SelectConnectionScreen extends StatefulWidget {
 }
 
 class _SelectConnectionScreenState extends State<SelectConnectionScreen> {
-  late StateMachineController _wifiStateMachineController;
-  late StateMachineController _bluetoothStateMachineController;
-  late SMINumber _selectedSMIInput;
-
-  void _onWifiInit(Artboard artboard) {
-    final controller = StateMachineController.fromArtboard(
-      artboard,
-      connectionModeButtonAnimationStateMachineName,
-    )!;
-    artboard.addController(controller);
-    controller
-        .findInput<double>(
-          modeSMIInputForConnectionModeButtonAnimationStateMachine,
-        )
-        ?.value = veryTinyPadding;
-  }
-
-  void _onBluetoothInit(Artboard artboard) {
-    final controller = StateMachineController.fromArtboard(
-      artboard,
-      connectionModeButtonAnimationStateMachineName,
-    )!;
-    artboard.addController(controller);
-    controller
-        .findInput<double>(
-          modeSMIInputForConnectionModeButtonAnimationStateMachine,
-        )
-        ?.value = tinyPadding;
-  }
-
-  @override
-  void dispose() {
-    _wifiStateMachineController.dispose();
-    _bluetoothStateMachineController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Center(
@@ -74,6 +38,7 @@ class _SelectConnectionScreenState extends State<SelectConnectionScreen> {
                   color: white34,
                   margin: const EdgeInsets.symmetric(
                     vertical: padding,
+                    horizontal: veryLargePadding + largePadding,
                   ),
                   child: Divider(
                     color: white74,
@@ -84,7 +49,7 @@ class _SelectConnectionScreenState extends State<SelectConnectionScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: largePadding,
+                  height: veryLargePadding,
                 ),
                 DecoratedBox(
                   decoration: BoxDecoration(
@@ -95,16 +60,19 @@ class _SelectConnectionScreenState extends State<SelectConnectionScreen> {
                   ),
                   child: IntrinsicHeight(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        SizedBox(
-                          height: oneFiftySevenDotSevenFive,
-                          width: oneTwentySixDotNil,
-                          child: RiveAnimation.asset(
-                            connectionModeButtonAnimationRiveAsset,
-                            onInit: _onWifiInit,
-                          ),
+                        const AnimatedConnectionModeButton(
+                          mode: ConnectionMode.wifi,
                         ),
+                        // SizedBox(
+                        //   height: twoHundredDotNil,
+                        //   width: oneFiftySevenDotSevenFive,
+                        //   child: RiveAnimation.asset(
+                        //     connectionModeButtonAnimationRiveAsset,
+                        //     onInit: _onWifiInit,
+                        //   ),
+                        // ),
                         Container(
                           width: veryTinyPadding,
                           color: white34,
@@ -119,20 +87,23 @@ class _SelectConnectionScreenState extends State<SelectConnectionScreen> {
                             endIndent: padding,
                           ),
                         ),
-                        SizedBox(
-                          height: oneFiftySevenDotSevenFive,
-                          width: oneTwentySixDotNil,
-                          child: RiveAnimation.asset(
-                            connectionModeButtonAnimationRiveAsset,
-                            onInit: _onBluetoothInit,
-                          ),
+                        const AnimatedConnectionModeButton(
+                          mode: ConnectionMode.bluetooth,
                         ),
+                        // SizedBox(
+                        //   height: twoHundredDotNil,
+                        //   width: oneFiftySevenDotSevenFive,
+                        //   child: RiveAnimation.asset(
+                        //     connectionModeButtonAnimationRiveAsset,
+                        //     onInit: _onBluetoothInit,
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
                 ),
                 const SizedBox(
-                  height: largePadding,
+                  height: extraLargePadding,
                 ),
                 ElevatedButton(
                   onPressed: () {
