@@ -41,7 +41,8 @@ const bluetoothAnimationName = 'scan';
 const canGoNextAnimationRiveAsset = 'assets/can_go_next.riv';
 const canGoNextAnimationName = 'Can Go Next Animation';
 
-const connectionModeButtonAnimationRiveAsset = 'assets/connection_mode_button_animation.riv';
+const connectionModeButtonAnimationRiveAsset =
+    'assets/connection_mode_button_animation.riv';
 const connectionModeButtonAnimationStateMachineName = 'State Machine 1';
 const modeSMIInputForConnectionModeButtonAnimationStateMachine = 'Mode';
 const selectedSMIInputForConnectionModeButtonAnimationStateMachine = 'Selected';
@@ -78,3 +79,5 @@ const failedToPairBluetoothDeviceText = 'Failed to pair bluetooth device';
 const failedToConnectToBluetoothDeviceText =
     'Failed to connect to bluetooth device';
 const nextStepText = 'Next Step';
+const connectionModeUnsupportedText =
+    'This connection mode is not supported at this time';

@@ -8,12 +8,14 @@ import 'package:rive/rive.dart';
 class AnimatedConnectionModeButton extends StatefulWidget {
   const AnimatedConnectionModeButton({
     required this.mode,
-    // required this.onTap,
+    required this.isTapped,
+    required this.onTap,
     super.key,
   });
 
   final ConnectionMode mode;
-  // final AnimatedConnectionModeButtonTapCallback onTap;
+  final bool isTapped;
+  final AnimatedConnectionModeButtonTapCallback onTap;
 
   @override
   State<AnimatedConnectionModeButton> createState() =>
@@ -24,8 +26,8 @@ class _AnimatedConnectionModeButtonState
     extends State<AnimatedConnectionModeButton> {
   late StateMachineController _wifiStateMachineController;
   late StateMachineController _bluetoothStateMachineController;
-  // SMIInput<double>? _wifiSelectedSMIInput;
-  // SMIInput<double>? _bluetoothSelectedSMIInput;
+  SMIInput<double>? _wifiSelectedSMIInput;
+  SMIInput<double>? _bluetoothSelectedSMIInput;
 
   void _onWifiInit(Artboard artboard) {
     final controller = StateMachineController.fromArtboard(
@@ -38,9 +40,9 @@ class _AnimatedConnectionModeButtonState
           modeSMIInputForConnectionModeButtonAnimationStateMachine,
         )
         ?.value = veryTinyPadding;
-    // _wifiSelectedSMIInput = controller.findInput<double>(
-    //   selectedSMIInputForConnectionModeButtonAnimationStateMachine,
-    // );
+    _wifiSelectedSMIInput = controller.findInput<double>(
+      selectedSMIInputForConnectionModeButtonAnimationStateMachine,
+    );
   }
 
   void _onBluetoothInit(Artboard artboard) {
@@ -54,9 +56,9 @@ class _AnimatedConnectionModeButtonState
           modeSMIInputForConnectionModeButtonAnimationStateMachine,
         )
         ?.value = tinyPadding;
-    // _bluetoothSelectedSMIInput = controller.findInput<double>(
-    //   selectedSMIInputForConnectionModeButtonAnimationStateMachine,
-    // );
+    _bluetoothSelectedSMIInput = controller.findInput<double>(
+      selectedSMIInputForConnectionModeButtonAnimationStateMachine,
+    );
   }
 
   @override
@@ -67,43 +69,46 @@ class _AnimatedConnectionModeButtonState
   }
 
   @override
-  Widget build(BuildContext context) => InkWell(
-        customBorder: const CircleBorder(),
-        onTap: () {
-          switch (widget.mode) {
-            case ConnectionMode.wifi:
-              // showTopSnackbar(context, 'Wifi is unsupported at this time');
-              break;
-            case ConnectionMode.bluetooth:
-              break;
-          }
-        },
-        child: Stack(
-          alignment: const Alignment(
-            nil,
-            nilDotSevenFive,
-          ),
-          children: [
-            SizedBox(
-              height: twoHundredDotNil,
-              width: oneFiftySevenDotSevenFive,
-              child: RiveAnimation.asset(
-                connectionModeButtonAnimationRiveAsset,
-                onInit: widget.mode == ConnectionMode.wifi
-                    ? _onWifiInit
-                    : _onBluetoothInit,
-              ),
-            ),
-            Text(
-              (widget.mode == ConnectionMode.wifi ? wifiText : bluetoothText)
-                  .toUpperCase(),
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: padding,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+  Widget build(BuildContext context) {
+    switch (widget.mode) {
+      case ConnectionMode.wifi:
+        _wifiSelectedSMIInput?.value = widget.isTapped ? veryTinyPadding : nil;
+        break;
+      case ConnectionMode.bluetooth:
+        _bluetoothSelectedSMIInput?.value = widget.isTapped ? tinyPadding : nil;
+        break;
+    }
+
+    return InkWell(
+      customBorder: const CircleBorder(),
+      onTap: widget.onTap,
+      child: Stack(
+        alignment: const Alignment(
+          nil,
+          nilDotSevenFive,
         ),
-      );
+        children: [
+          SizedBox(
+            height: twoHundredDotNil,
+            width: oneFiftySevenDotSevenFive,
+            child: RiveAnimation.asset(
+              connectionModeButtonAnimationRiveAsset,
+              onInit: widget.mode == ConnectionMode.wifi
+                  ? _onWifiInit
+                  : _onBluetoothInit,
+            ),
+          ),
+          Text(
+            (widget.mode == ConnectionMode.wifi ? wifiText : bluetoothText)
+                .toUpperCase(),
+            style: TextStyle(
+              color: widget.isTapped ? green : Theme.of(context).primaryColor,
+              fontSize: padding,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

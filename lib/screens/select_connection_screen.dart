@@ -2,11 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-// import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mecanum_wheel_drivetrain_controller/cubits/cubits.dart';
 import 'package:mecanum_wheel_drivetrain_controller/utils/utils.dart';
 import 'package:mecanum_wheel_drivetrain_controller/widgets/widgets.dart';
-import 'package:rive/rive.dart';
 
 class SelectConnectionScreen extends StatefulWidget {
   const SelectConnectionScreen({super.key});
@@ -16,6 +13,22 @@ class SelectConnectionScreen extends StatefulWidget {
 }
 
 class _SelectConnectionScreenState extends State<SelectConnectionScreen> {
+  late ValueNotifier<ConnectionMode?> _selectedMode;
+
+  @override
+  void initState() {
+    _selectedMode = ValueNotifier<ConnectionMode?>(
+      null,
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _selectedMode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Center(
@@ -62,17 +75,16 @@ class _SelectConnectionScreenState extends State<SelectConnectionScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        const AnimatedConnectionModeButton(
-                          mode: ConnectionMode.wifi,
+                        ValueListenableBuilder<ConnectionMode?>(
+                          valueListenable: _selectedMode,
+                          builder: (_, selectedModeValue, __) =>
+                              AnimatedConnectionModeButton(
+                            mode: ConnectionMode.wifi,
+                            isTapped: selectedModeValue == ConnectionMode.wifi,
+                            onTap: () =>
+                                _selectedMode.value = ConnectionMode.wifi,
+                          ),
                         ),
-                        // SizedBox(
-                        //   height: twoHundredDotNil,
-                        //   width: oneFiftySevenDotSevenFive,
-                        //   child: RiveAnimation.asset(
-                        //     connectionModeButtonAnimationRiveAsset,
-                        //     onInit: _onWifiInit,
-                        //   ),
-                        // ),
                         Container(
                           width: veryTinyPadding,
                           color: white34,
@@ -87,17 +99,17 @@ class _SelectConnectionScreenState extends State<SelectConnectionScreen> {
                             endIndent: padding,
                           ),
                         ),
-                        const AnimatedConnectionModeButton(
-                          mode: ConnectionMode.bluetooth,
+                        ValueListenableBuilder<ConnectionMode?>(
+                          valueListenable: _selectedMode,
+                          builder: (_, selectedModeValue, __) =>
+                              AnimatedConnectionModeButton(
+                            mode: ConnectionMode.bluetooth,
+                            isTapped:
+                                selectedModeValue == ConnectionMode.bluetooth,
+                            onTap: () =>
+                                _selectedMode.value = ConnectionMode.bluetooth,
+                          ),
                         ),
-                        // SizedBox(
-                        //   height: twoHundredDotNil,
-                        //   width: oneFiftySevenDotSevenFive,
-                        //   child: RiveAnimation.asset(
-                        //     connectionModeButtonAnimationRiveAsset,
-                        //     onInit: _onBluetoothInit,
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
@@ -105,16 +117,45 @@ class _SelectConnectionScreenState extends State<SelectConnectionScreen> {
                 const SizedBox(
                   height: extraLargePadding,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    //.
-                  },
-                  child: Text(
-                    nextStepText,
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontSize: padding + tinyPadding + tinyPadding,
-                      fontWeight: FontWeight.w300,
+                ValueListenableBuilder<ConnectionMode?>(
+                  valueListenable: _selectedMode,
+                  builder: (_, selectedModeValue, __) => ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: selectedModeValue != null
+                          ? const MaterialStatePropertyAll<Color>(
+                              green,
+                            )
+                          : null,
+                    ),
+                    onPressed: () {
+                      switch (selectedModeValue) {
+                        case null:
+                          break;
+                        case ConnectionMode.wifi:
+                          showTopSnackbar(
+                            context,
+                            connectionModeUnsupportedText,
+                          );
+                          break;
+                        case ConnectionMode.bluetooth:
+                          showTopSnackbar(
+                            context,
+                            connectionModeUnsupportedText,
+                          );
+                          break;
+                      }
+                    },
+                    child: Text(
+                      nextStepText,
+                      style: TextStyle(
+                        color: selectedModeValue != null
+                            ? Theme.of(context).scaffoldBackgroundColor
+                            : Theme.of(context).primaryColor,
+                        fontSize: padding + tinyPadding + tinyPadding,
+                        fontWeight: selectedModeValue != null
+                            ? FontWeight.bold
+                            : FontWeight.w300,
+                      ),
                     ),
                   ),
                 ),
